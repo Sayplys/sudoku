@@ -40,7 +40,7 @@ A simple Sudoku project designed to generate, validate, and solve Sudoku puzzles
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/sayplys/sudoku.git
+    git clone https://github.com/Sayplys/sudoku.git
     cd sudoku/src
     ```
 
