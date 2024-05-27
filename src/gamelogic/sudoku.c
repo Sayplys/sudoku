@@ -5,6 +5,9 @@
 #define SIZE 9
 
 bool verifyFieldValue(int** table, int value, int row, int col){
+  if(table[row][col] != 0)
+    return false;
+
   for(int i = 0; i < SIZE; i++)
     if(table[i][col] == value)
       return false;
@@ -45,4 +48,17 @@ int** createSudoku(int difficult){
 
 
   return table;
+}
+
+bool addValue(int** table, int value, int row, int col){
+  if(verifyFieldValue(table, value, row, col)){
+    table[row][col] = value;
+    return true;
+  }
+  return false;
+}
+
+bool removeValue(int** table, int row, int col){
+  table[row][col] = 0;
+  return true;
 }
