@@ -9,9 +9,9 @@ A simple Sudoku project designed to generate, validate, and solve Sudoku puzzles
     - [x] Add random values
         - [x] Difficulty
     - [x] Verify addition
-- [ ] Interaction
-    - [ ] Add number to square
-    - [ ] Remove number from square
+- [x] Interaction
+    - [x] Add number to square
+    - [x] Remove number from square
 - [ ] Interface
     - [ ] Show table
     - [ ] Select square
@@ -41,12 +41,12 @@ A simple Sudoku project designed to generate, validate, and solve Sudoku puzzles
 1. Clone the repository:
     ```sh
     git clone https://github.com/Sayplys/sudoku.git
-    cd sudoku/src
+    cd sudoku/src/gameLogic
     ```
 
 2. Compile the project:
     ```sh
-    gcc -o sudoku sudokuCreator.c
+    gcc -o sudoku main.c sudoku.c
     ```
 
 3. Run the executable:
