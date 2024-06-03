@@ -1,6 +1,6 @@
 # Sudoku
 
-A simple Sudoku project designed to generate, validate, and solve Sudoku puzzles. This project provides functionalities for creating Sudoku boards, adding and removing numbers, and includes a user interface for interaction.
+A simple Sudoku project designed to generate, validate, and solve Sudoku puzzles. This project provides functionalities for creating Sudoku boards, adding and removing numbers, and includes a user interface through terminal for interaction.
 
 ## Primary Functionalities
 
@@ -13,7 +13,7 @@ A simple Sudoku project designed to generate, validate, and solve Sudoku puzzles
     - [x] Add number to square
     - [x] Remove number from square
 - [ ] Interface
-    - [ ] Show table
+    - [x] Show table
     - [ ] Select square
     - [ ] Add number
     - [ ] Remove number
@@ -34,7 +34,6 @@ A simple Sudoku project designed to generate, validate, and solve Sudoku puzzles
 ### Prerequisites
 
 - C Compiler (e.g., GCC)
-- Make (optional, for build automation)
 
 ### Build Instructions
 

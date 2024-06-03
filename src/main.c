@@ -1,4 +1,4 @@
-#include "./sudoku.h"
+#include "./game/sudoku.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -28,6 +28,11 @@ int main() {
     if(!addValue(sudoku, 3, 5, 6))
       printf("\n It is not possible add 3 in {5,6}");
     
+    printf("\n");
+    printSudoku(sudoku);
+
+    sleep(1);
+    removeValue(sudoku, 5,6);
     printf("\n");
     printSudoku(sudoku);
 
