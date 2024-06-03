@@ -1,40 +1,26 @@
 #include "./game/sudoku.h"
+#include "./interface/interface.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 
-void printSudoku(int** table) {
-    for (int row = 0; row < SIZE; row++) {
-        for (int col = 0; col < SIZE; col++) {
-            if (col % 3 == 0 && col != 0)
-                printf("| ");
-            printf("%2d ", table[row][col]);
-        }
-        printf("\n");
-        if ((row + 1) % 3 == 0 && row != SIZE - 1) {
-            for (int i = 0; i < SIZE + 2; i++)
-                printf("---");
-            printf("\n");
-        }
-    }
-}
-
 int main() {
     int difficulty = 1; // Adjust difficulty as needed
+    int selectedRow = 0;
+    int selectedCol = 0;
     int** sudoku = createSudoku(difficulty);
-    printSudoku(sudoku);
+    char arrowInput[4];
 
-    sleep(1);
-    if(!addValue(sudoku, 3, 5, 6))
-      printf("\n It is not possible add 3 in {5,6}");
-    
-    printf("\n");
-    printSudoku(sudoku);
+    while(1){
+      printf("\e[1;1H\e[2J");
+      printSudoku(sudoku, selectedRow, selectedCol);
+      
+      fgets(arrowInput, 4, stdin);
+      selectFieldByArrow(arrowInput, &selectedRow, &selectedCol);
+      while ( getchar() != '\n' );
 
-    sleep(1);
-    removeValue(sudoku, 5,6);
-    printf("\n");
-    printSudoku(sudoku);
+      if(arrowInput[0] == '0')break;
+    }
 
     // Free allocated memory
     for (int row = 0; row < SIZE; row++)

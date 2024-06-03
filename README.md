@@ -14,7 +14,7 @@ A simple Sudoku project designed to generate, validate, and solve Sudoku puzzles
     - [x] Remove number from square
 - [ ] Interface
     - [x] Show table
-    - [ ] Select square
+    - [x] Select square
     - [ ] Add number
     - [ ] Remove number
     - [ ] Show win
@@ -45,7 +45,7 @@ A simple Sudoku project designed to generate, validate, and solve Sudoku puzzles
 
 2. Compile the project:
     ```sh
-    gcc -o sudoku main.c sudoku.c
+    gcc -o bin/sudoku.o src/main.c src/game/sudoku.c src/interface/displayer.c src/interface/listener.c
     ```
 
 3. Run the executable:

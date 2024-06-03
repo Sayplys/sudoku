@@ -1,6 +1,7 @@
 #ifndef INTERFACE
 #define interface
 
-void print_sudoku(int** table);
+void printSudoku(int** table, int selectedRow, int selectedCol);
+void selectFieldByArrow(char* input,int* currentRow, int* currentCol);
 
 #endif // INTERFACE
