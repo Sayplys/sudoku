@@ -1,35 +1,45 @@
+#include <stdio.h>
+
 #include "../game/sudoku.h"
 
-int selectFieldByArrow(char* input,int* currentRow, int* currentCol){
+bool selectFieldByArrow(char* input,int* currentRow, int* currentCol){
   if(input[0] == '\033')
     if(input[3] == '\0' && input[1] == '['){
       switch (input[2]){
         case 'A': // UP
           if (*currentRow > 0){
             (*currentRow)--;
-            return 1;
+            return true;
           }
-          return 0;
+          return false;
         case 'B': // DOWN
           if(*currentRow < SIZE - 1){
             (*currentRow)++;
-            return 1;
+            return true;
           }
-          return 0;
+          return false;
         case 'C': // RIGHT
           if(*currentCol < SIZE - 1){
             (*currentCol)++;
-            return 1;
+            return true;
           }
-          return 0;
+          return false;
         case 'D': // Left
           if(*currentCol > 0){
             (*currentCol)--;
-            return 1;
+            return true;
           }
-          return 0;
+          return false;
     }
   }
 
-  return 0;
+  return false;
+}
+
+bool addInputValue(int** table, char input, int selectedRow, int selectedCol){
+  if('1' < input && input < '9'){
+    return addValue(table, (input + 1) % '1', selectedRow, selectedCol);
+  }
+
+  return false;
 }

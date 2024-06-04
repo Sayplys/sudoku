@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include <unistd.h>
 #include <termios.h>
 
@@ -12,7 +11,7 @@ int main() {
     int selectedRow = 0;
     int selectedCol = 0;
     int** sudoku = createSudoku(difficulty);
-    int hasChange = 1;
+    bool hasChange = true;
     struct termios originalTermios;
 
     configureTerminal(&originalTermios);
@@ -22,7 +21,7 @@ int main() {
         printSudoku(sudoku, selectedRow, selectedCol);
       }
 
-      hasChange = HandleInput(&selectedRow, &selectedCol);
+      hasChange = HandleInput(sudoku, &selectedRow, &selectedCol);
     }
     resetTerminal(&originalTermios);
 

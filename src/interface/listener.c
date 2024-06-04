@@ -17,19 +17,19 @@ void resetTerminal(struct termios *originalTermios){
   tcsetattr(STDIN_FILENO, TCSANOW, originalTermios);
 }
 
-int HandleInput(int *currentRow, int *currentCol){
+bool HandleInput(int **table, int *currentRow, int *currentCol){
   SKInput skinput;
 
   char input[4];
   fgets(input, 4 , stdin);
   if(selectFieldByArrow(input, currentRow, currentCol))
-    return 1;
-  else if(input[0] == 10 && '1' < input[1] && input[1] < '9')
-    return 1;
+    return true;
+  else if(addInputValue(table, *input, *currentRow, *currentCol))
+    return true;
   else if('0' < input[0] && input[1] < '9' &&
           '0' < input[0] && input[1] < '9')
-    return 1;
+    return true;
   
-  return 0;
+  return false;
 }
 

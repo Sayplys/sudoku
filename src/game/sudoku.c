@@ -1,19 +1,25 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 #define SIZE 9
+#define BITS_PER_UINT (sizeof(uint) * 8)
+
+static uint* fixvaluemap;
 
 bool verifyFieldValue(int** table, int value, int row, int col){
-  if(table[row][col] != 0)
+  int field = row * 9 + col;
+  int mapArea = fixvaluemap[field / BITS_PER_UINT];
+  if((mapArea | (1 << field)) == mapArea)
     return false;
 
   for(int i = 0; i < SIZE; i++)
-    if(table[i][col] == value)
+    if(i != row && table[i][col] == value)
       return false;
 
   for(int j = 0; j < SIZE; j++)
-    if(table[row][j] == value)
+    if(j != col && table[row][j] == value)
       return false;
 
   int startRow = row / 3 * 3;
@@ -21,7 +27,8 @@ bool verifyFieldValue(int** table, int value, int row, int col){
 
   for(int i = 0; i < 3; i++)
     for(int j = 3; j < 3; j++)
-      if(table[startRow + i][startCol + j] == value)
+      if(startRow + i != row && startCol + j != col &&
+          table[startRow + i][startCol + j] == value)
         return false;
       
 
@@ -29,6 +36,7 @@ bool verifyFieldValue(int** table, int value, int row, int col){
 }
 
 int** createSudoku(int difficult){
+  fixvaluemap = calloc(((90  + BITS_PER_UINT - 1) / BITS_PER_UINT), sizeof(uint));
   int** table = (int**)calloc(SIZE, sizeof(int*));
   for(int row = 0; row < SIZE; row++) 
     table[row] = (int*)calloc(SIZE, sizeof(int));
@@ -40,8 +48,11 @@ int** createSudoku(int difficult){
       int randNum = rand() % (9 * 3 * difficult);
       if( randNum < 9 && randNum > 0){
         bool canAdd = verifyFieldValue(table, randNum, row, col);
-        if(canAdd)
+        if(canAdd){
           table[row][col] = randNum;
+          int field = row * 9 + col;
+          fixvaluemap[field / BITS_PER_UINT] |= (1 << field);
+        }
       }
     }
   }

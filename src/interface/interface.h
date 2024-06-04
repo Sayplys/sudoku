@@ -1,6 +1,8 @@
 #ifndef INTERFACE
 #define interface
 
+#include <stdbool.h>
+
 typedef enum InputType{
   ARROW,
   COORD,
@@ -16,11 +18,12 @@ typedef struct SKInput{
 
 void printSudoku(int** table, int selectedRow, int selectedCol);
 int selectFieldByArrow(char* input,int* currentRow, int* currentCol);
+int addInputValue(int ** table, char input, int selectedRow, int selectedCol);
 
 
 void configureTerminal(struct termios *originalTermios);
 void resetTerminal(struct termios *originalTermios);
-int HandleInput(int *selectedRow, int *selectedCol);
+bool HandleInput(int** table, int *selectedRow, int *selectedCol);
 
 
 #endif // INTERFACE
