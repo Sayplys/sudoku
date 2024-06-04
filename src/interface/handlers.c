@@ -38,9 +38,9 @@ bool selectFieldByArrow(char* input,int* currentRow, int* currentCol){
 
 bool inputValue(int** table, char input, int selectedRow, int selectedCol){
   if('1' <= input && input <= '9'){
-    return addValue(table, (input + 1) % '1', selectedRow, selectedCol);
+    return addValue((input + 1) % '1', selectedRow, selectedCol);
   }else if(input == '0'){
-    return removeValue(table, selectedRow, selectedCol);
+    return removeValue(selectedRow, selectedCol);
   }
 
   return false;

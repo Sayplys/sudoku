@@ -26,9 +26,6 @@ bool HandleInput(int **table, int *currentRow, int *currentCol){
     return true;
   else if(inputValue(table, *input, *currentRow, *currentCol))
     return true;
-  else if('0' < input[0] && input[1] < '9' &&
-          '0' < input[0] && input[1] < '9')
-    return true;
   
   return false;
 }

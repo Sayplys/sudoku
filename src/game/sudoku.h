@@ -7,11 +7,12 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+extern int** sudokuTable;
 extern uint* fixedFieldMap;
 
-bool verifyFieldValue(int** table, int value, int row, int col);
-int** createSudoku(int difficulty);
-bool addValue(int** table, int value, int row, int col);
-bool removeValue(int** table, int row, int col);
+bool verifyFieldValue(int value, int row, int col);
+void createSudoku(int difficulty);
+bool addValue(int value, int row, int col);
+bool removeValue(int row, int col);
 
 #endif // SUDOKU

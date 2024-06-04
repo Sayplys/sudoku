@@ -9,7 +9,7 @@ int main() {
     int difficulty = 1; // Adjust difficulty as needed
     int selectedRow = 0;
     int selectedCol = 0;
-    int** sudoku = createSudoku(difficulty);
+    createSudoku(difficulty);
     bool hasChange = true;
     struct termios originalTermios;
 
@@ -18,17 +18,17 @@ int main() {
     while(1){
       if(hasChange){
         system("clear");
-        printSudoku(sudoku, selectedRow, selectedCol);
+        printSudoku(sudokuTable, selectedRow, selectedCol);
       }
 
-      hasChange = HandleInput(sudoku, &selectedRow, &selectedCol);
+      hasChange = HandleInput(sudokuTable, &selectedRow, &selectedCol);
     }
     resetTerminal(&originalTermios);
 
     // Free allocated memory
     for (int row = 0; row < SIZE; row++)
-        free(sudoku[row]);
-    free(sudoku);
+        free(sudokuTable[row]);
+    free(sudokuTable);
     free(fixedFieldMap);
 
     return 0;
