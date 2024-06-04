@@ -26,7 +26,7 @@ bool verifyFieldValue(int** table, int value, int row, int col){
   int startCol = col / 3 * 3;
 
   for(int i = 0; i < 3; i++)
-    for(int j = 3; j < 3; j++)
+    for(int j = 0; j < 3; j++)
       if(startRow + i != row && startCol + j != col &&
           table[startRow + i][startCol + j] == value)
         return false;
