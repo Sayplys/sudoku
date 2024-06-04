@@ -1,16 +1,14 @@
-#include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
 #include <stdio.h>
 
-#define SIZE 9
-#define BITS_PER_UINT (sizeof(uint) * 8)
+#include "sudoku.h"
 
-static uint* fixvaluemap;
+uint* fixedFieldMap = NULL;
 
 bool verifyFieldValue(int** table, int value, int row, int col){
   int field = row * 9 + col;
-  int mapArea = fixvaluemap[field / BITS_PER_UINT];
+  int mapArea = fixedFieldMap[field / BITS_PER_UINT];
   if((mapArea | (1 << field)) == mapArea)
     return false;
 
@@ -36,7 +34,7 @@ bool verifyFieldValue(int** table, int value, int row, int col){
 }
 
 int** createSudoku(int difficult){
-  fixvaluemap = calloc(((90  + BITS_PER_UINT - 1) / BITS_PER_UINT), sizeof(uint));
+  fixedFieldMap = calloc(((SIZE * SIZE  + BITS_PER_UINT - 1) / BITS_PER_UINT), sizeof(uint));
   int** table = (int**)calloc(SIZE, sizeof(int*));
   for(int row = 0; row < SIZE; row++) 
     table[row] = (int*)calloc(SIZE, sizeof(int));
@@ -51,7 +49,7 @@ int** createSudoku(int difficult){
         if(canAdd){
           table[row][col] = randNum;
           int field = row * 9 + col;
-          fixvaluemap[field / BITS_PER_UINT] |= (1 << field);
+          fixedFieldMap[field / BITS_PER_UINT] |= (1 << field);
         }
       }
     }

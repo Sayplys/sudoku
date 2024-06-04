@@ -5,7 +5,6 @@
 #include "./game/sudoku.h"
 #include "./interface/interface.h"
 
-
 int main() {
     int difficulty = 1; // Adjust difficulty as needed
     int selectedRow = 0;
@@ -14,6 +13,7 @@ int main() {
     bool hasChange = true;
     struct termios originalTermios;
 
+    
     configureTerminal(&originalTermios);
     while(1){
       if(hasChange){
@@ -29,6 +29,7 @@ int main() {
     for (int row = 0; row < SIZE; row++)
         free(sudoku[row]);
     free(sudoku);
+    free(fixedFieldMap);
 
     return 0;
 }
