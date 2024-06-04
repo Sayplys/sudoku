@@ -33,6 +33,7 @@ A simple Sudoku project designed to generate, validate, and solve Sudoku puzzles
 
 ### Prerequisites
 
+- Linux
 - C Compiler (e.g., GCC)
 
 ### Build Instructions
@@ -45,7 +46,7 @@ A simple Sudoku project designed to generate, validate, and solve Sudoku puzzles
 
 2. Compile the project:
     ```sh
-    gcc -o bin/sudoku.o src/main.c src/game/sudoku.c src/interface/displayer.c src/interface/listener.c
+    gcc -o bin/sudoku.o src/main.c src/game/sudoku.c src/interface/displayer.c src/interface/handlers.c src/interface/listener.c
     ```
 
 3. Run the executable:
