@@ -68,6 +68,10 @@ bool addValue(int** table, int value, int row, int col){
 }
 
 bool removeValue(int** table, int row, int col){
+  int field = row * 9 + col;
+  int mapArea = fixedFieldMap[field / BITS_PER_UINT];
+  if((mapArea | (1 << field)) == mapArea)
+    return false;
   table[row][col] = 0;
   return true;
 }

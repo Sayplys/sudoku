@@ -18,7 +18,7 @@ typedef struct SKInput{
 
 void printSudoku(int** table, int selectedRow, int selectedCol);
 int selectFieldByArrow(char* input,int* currentRow, int* currentCol);
-int addInputValue(int ** table, char input, int selectedRow, int selectedCol);
+int inputValue(int ** table, char input, int selectedRow, int selectedCol);
 
 
 void configureTerminal(struct termios *originalTermios);

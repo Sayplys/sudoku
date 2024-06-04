@@ -16,7 +16,7 @@ A simple Sudoku project designed to generate, validate, and solve Sudoku puzzles
     - [x] Show table
     - [x] Select square
     - [x] Add number
-    - [ ] Remove number
+    - [x] Remove number
     - [ ] Show win
     - [ ] Make new game
     - [ ] Show answers

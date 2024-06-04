@@ -24,7 +24,7 @@ bool HandleInput(int **table, int *currentRow, int *currentCol){
   fgets(input, 4 , stdin);
   if(selectFieldByArrow(input, currentRow, currentCol))
     return true;
-  else if(addInputValue(table, *input, *currentRow, *currentCol))
+  else if(inputValue(table, *input, *currentRow, *currentCol))
     return true;
   else if('0' < input[0] && input[1] < '9' &&
           '0' < input[0] && input[1] < '9')
