@@ -34,3 +34,7 @@ void printSudoku(int** table, int selectedRow, int selectedColumn){
     }
 }
 
+void printWinMenu(){
+  printf("Congratulations you found a solution!!!");
+  printf("Press r to restart or q to quit?");
+}

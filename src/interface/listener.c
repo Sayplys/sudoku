@@ -17,9 +17,7 @@ void resetTerminal(struct termios *originalTermios){
   tcsetattr(STDIN_FILENO, TCSANOW, originalTermios);
 }
 
-bool HandleInput(int **table, int *currentRow, int *currentCol){
-  SKInput skinput;
-
+bool gameListener(int **table, int *currentRow, int *currentCol){
   char input[4];
   fgets(input, 4 , stdin);
   if(selectFieldByArrow(input, currentRow, currentCol))
@@ -27,6 +25,23 @@ bool HandleInput(int **table, int *currentRow, int *currentCol){
   else if(inputValue(table, *input, *currentRow, *currentCol))
     return true;
   
+  return false;
+}
+
+bool HandleInput(int **table, int *currentRow, int *currentCol, bool isPlaying){
+
+  if(isPlaying)
+    return gameListener(table, currentRow, currentCol);
+  else{
+    char input = getc(stdin);
+    if(input == 'r'){
+      restartGame();
+      return true;
+    }
+    if(input == 'q')
+      return false;
+  }
+
   return false;
 }
 

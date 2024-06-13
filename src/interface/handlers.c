@@ -45,3 +45,16 @@ bool inputValue(int** table, char input, int selectedRow, int selectedCol){
 
   return false;
 }
+
+
+bool showWin(){
+  if(checkWin() == true){
+    return true;
+  }
+  
+  return false;
+}
+
+void restartGame(){
+  createSudoku();
+}

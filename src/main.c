@@ -9,8 +9,9 @@ int main() {
     int difficulty = 1; // Adjust difficulty as needed
     int selectedRow = 0;
     int selectedCol = 0;
-    createSudoku(difficulty);
+    createSudoku();
     bool hasChange = true;
+    bool isPlaying = true;
     struct termios originalTermios;
 
     
@@ -19,9 +20,16 @@ int main() {
       if(hasChange){
         system("clear");
         printSudoku(sudokuTable, selectedRow, selectedCol);
+        if(showWin()){
+          isPlaying = false;
+          printWinMenu();
+        }
       }
 
-      hasChange = HandleInput(sudokuTable, &selectedRow, &selectedCol);
+      hasChange = HandleInput(sudokuTable, &selectedRow, &selectedCol, isPlaying);
+      if(!hasChange && !isPlaying){
+        break;
+      }
     }
     resetTerminal(&originalTermios);
 

@@ -6,6 +6,7 @@
 
 uint* fixedFieldMap = NULL;
 int** sudokuTable = NULL;
+int difficulty = 1;
 
 bool verifyFieldValue(int value, int row, int col){
   int field = row * 9 + col;
@@ -34,7 +35,11 @@ bool verifyFieldValue(int value, int row, int col){
   return true;
 }
 
-void createSudoku(int difficult){
+void setDifficulty(int newDifficulty){
+  int difficulty = newDifficulty;
+}
+
+void createSudoku(){
   fixedFieldMap = calloc(((SIZE * SIZE  + BITS_PER_UINT - 1) / BITS_PER_UINT), sizeof(uint));
   sudokuTable = (int**)calloc(SIZE, sizeof(int*));
   for(int row = 0; row < SIZE; row++) 
@@ -44,7 +49,7 @@ void createSudoku(int difficult){
 
   for(int row = 0; row < SIZE; row++){
     for(int col = 0; col < SIZE; col++){
-      int randNum = rand() % (9 * 3 * difficult);
+      int randNum = rand() % (9 * 3 * difficulty);
       if( randNum < 9 && randNum > 0){
         bool canAdd = verifyFieldValue(randNum, row, col);
         if(canAdd){
@@ -71,5 +76,13 @@ bool removeValue(int row, int col){
   if((mapArea | (1 << field)) == mapArea)
     return false;
   sudokuTable[row][col] = 0;
+  return true;
+}
+
+bool checkWin(){
+  for(int row = 0; row < SIZE; row++)
+    for(int col = 0; col < SIZE; col++)
+      if(sudokuTable[row][col] == 0)
+        return false;
   return true;
 }

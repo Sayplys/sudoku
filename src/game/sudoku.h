@@ -9,10 +9,12 @@
 
 extern int** sudokuTable;
 extern uint* fixedFieldMap;
+extern int difficulty;
 
 bool verifyFieldValue(int value, int row, int col);
-void createSudoku(int difficulty);
+void createSudoku();
 bool addValue(int value, int row, int col);
 bool removeValue(int row, int col);
+bool checkWin();
 
 #endif // SUDOKU
