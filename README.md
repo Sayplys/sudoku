@@ -17,12 +17,11 @@ A simple Sudoku project designed to generate, validate, and solve Sudoku puzzles
     - [x] Select square
     - [x] Add number
     - [x] Remove number
-    - [ ] Show win
-    - [ ] Make new game
+    - [x] Show win
+    - [x] Make new game
     - [ ] Show answers
 - [ ] Implement solution algorithm
-    - [ ] Create incidence matrix
-    - [ ] Transform to doubly linked structure
+    - [x] Create DLX double linked structure
     - [ ] Apply DLX algorithm
 
 ## Secondary Functionalities
