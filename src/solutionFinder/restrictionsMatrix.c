@@ -1,115 +1,157 @@
+#include "DLXSudoku.h"
 #include <math.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 
-typedef struct Node Node;
-typedef struct CollumnNode CollumnNode;
 
-struct Node {
-  Node* up;
-  Node* down;
-  Node* left;
-  Node* right;
-  CollumnNode* collumn;
-};
-
-struct CollumnNode {
-  Node self;
-  int index;
-};
-
-void addNodeToCollumn(Node** lastRowNode, CollumnNode** currentCollumnNode, int collumn) {
-  CollumnNode* startNode = *currentCollumnNode; // To detect cycles
-  do {
-    *currentCollumnNode = (*currentCollumnNode)->self.right->collumn;
-    if (*currentCollumnNode == startNode){
-      fprintf(stderr, "Memory allocation failed\n");
-      return;
-    }
-  }while ((*currentCollumnNode)->index != collumn);
-
-  Node* newNode = (Node*)malloc(sizeof(Node));
-  if (newNode == NULL) {
-    fprintf(stderr, "Memory allocation failed\n");
+bool addColumnNode(ColumnNode* header, int index){
+  ColumnNode* column = (ColumnNode*)malloc(sizeof(ColumnNode));
+  if(column == NULL){
+    fprintf(stderr, "It wasn's possible allocate memory... exiting...");
     exit(EXIT_FAILURE);
   }
 
-  newNode->up = (*currentCollumnNode)->self.up;
-  (*currentCollumnNode)->self.up->down = newNode;
-  (*currentCollumnNode)->self.up = newNode;
-  newNode->down = &(*currentCollumnNode)->self;
-  newNode->collumn = (*currentCollumnNode);
+  column->self.up = &column->self;
+  column->self.down = &column->self;
+  column->self.right = &header->self;
+  column->self.left = header->self.left;
+  header->self.left->right = &column->self;
+  header->self.left = &column->self;
+  
+  column->index = index;
+  column->size = 0;
+  column->self.column = column;
 
-  if (*lastRowNode != NULL) {
-    newNode->right = (*lastRowNode)->right;
-      (*lastRowNode)->right->left = newNode;
-      (*lastRowNode)->right = newNode;
-      newNode->left = *lastRowNode;
-    }else {
-      newNode->right = newNode;
-      newNode->left = newNode;
-    }
-
-  *lastRowNode = newNode;
+  return true;
 }
 
-CollumnNode* createRestrictionsMatrix(int** sudoku, int sudokuSize) {
-  CollumnNode* header = (CollumnNode*)malloc(sizeof(CollumnNode));
-  if(header == NULL) {
-    fprintf(stderr, "Memory allocation failed\n");
-    exit(EXIT_FAILURE);
-  }
-
-  header->self.up = &header->self;
-  header->self.down = &header->self;
-  header->self.left = &header->self;
-  header->self.right = &header->self;
-  header->self.collumn = header;
-  header->index = -1;
-
-  CollumnNode* lastCreated = header;
-
-  for (int i = 0; i < 3 * sudokuSize * sudokuSize; i++) {
-    CollumnNode* newCollumn = (CollumnNode*)malloc(sizeof(CollumnNode));
-    if (newCollumn == NULL) {
-      fprintf(stderr, "Memory allocation failed\n");
-      exit(EXIT_FAILURE);
+bool addRowNode(ColumnNode* header, int columnIndex, Node** leftNode) {
+    Node* node = (Node*)malloc(sizeof(Node));
+    if (node == NULL) {
+        fprintf(stderr, "It wasn't possible to allocate memory... exiting...");
+        exit(EXIT_FAILURE);
     }
 
-    newCollumn->self.up = &newCollumn->self;
-    newCollumn->self.down = &newCollumn->self;
-    newCollumn->self.left = &lastCreated->self;
-    lastCreated->self.right = &newCollumn->self;
-    newCollumn->self.right = &header->self;
-    header->self.left = &newCollumn->self;
-    newCollumn->self.collumn = newCollumn;
-    newCollumn->index = i;
-    lastCreated = newCollumn;
+    ColumnNode* column = (ColumnNode*)header->self.right->column;
+    while (column != header) {
+        if (column->index == columnIndex) {
+            break;
+        }
+        column = (ColumnNode*)column->self.right->column;
+    }
+
+    if (column == header) {
+        free(node);
+        return false;
+    }
+
+    node->down = &column->self;
+    node->up = column->self.up;
+    column->self.up->down = node;
+    column->self.up = node;
+
+    if (*leftNode == NULL) {
+        node->left = node;
+        node->right = node;
+    } else {
+        node->left = *leftNode;
+        node->right = (*leftNode)->right;
+        (*leftNode)->right->left = node;
+        (*leftNode)->right = node;
+    }
+    
+    *leftNode = node;
+    node->column = column;
+
+    column->size++;
+    return true;
+}
+
+bool createRow(int row, int col, int num, int sudokuSize, ColumnNode* header){
+  Node* addedNode = NULL;
+          
+  int field = row * sudokuSize + col;
+  if(!addRowNode(header, field, &addedNode)) return false;
+          
+  int colNum = sudokuSize * sudokuSize + col * sudokuSize + num;
+  if(!addRowNode(header, colNum, &addedNode)) return false;
+          
+  int rowNum = 2 * sudokuSize * sudokuSize + row * sudokuSize + num;
+  if(!addRowNode(header, rowNum, &addedNode)) return false;
+
+  int area = 3 * sudokuSize * sudokuSize +
+    ((row/(int)sqrt(sudokuSize)) * (int)sqrt(sudokuSize) + col/(int)sqrt(sudokuSize)) 
+    * sudokuSize + num;
+  if(!addRowNode(header, area, &addedNode)) return false;
+
+  return true;
+}
+
+ColumnNode* createRestrictionsMatrix(int** sodoku, int sudokuSize){
+  ColumnNode* header = (ColumnNode*)malloc(sizeof(ColumnNode));
+  if(header == NULL){
+    fprintf(stderr, "It wasn's possible allocate memory... exiting...\n");
+    exit(EXIT_FAILURE);
+  }
+ 
+  header->self.left = &header->self;
+  header->self.right = &header->self;
+  header->index = -1;
+  header->self.column = header;
+
+
+  for(int i = 0; i < sudokuSize*sudokuSize*3 + sudokuSize*sudokuSize; i++){
+    if(!addColumnNode(header, i)){
+      fprintf(stderr, "Failed to add column %d... exiting...\n", i);
+      exit(EXIT_FAILURE);
+    };
   }
 
-  for (int row = 0; row < sudokuSize; row++) {
-    for (int col = 0; col < sudokuSize; col++) {
-      int area = floor((float)row / 3) * 3 + floor((float)col / 3);
-      if (sudoku[row][col] == 0) {
-        for (int i = 0; i < sudokuSize; i++) {
-          CollumnNode* currentCollumnNode = header;
-          Node* lastAddNode = NULL;
+  for(int row = 0; row < sudokuSize; row++){
+    for(int col = 0; col < sudokuSize; col++){
+      if(sodoku[row][col] == 0){
+        for(int num = 0; num < sudokuSize; num++){
+          if(!createRow(row, col, num, sudokuSize, header)){
+            fprintf(
+                stderr, 
+                "Failed to add row for cell %d %d with num %d... exiting...\n", 
+                row, col, num);
+            exit(EXIT_FAILURE);
+          }
 
-          addNodeToCollumn(&lastAddNode, &currentCollumnNode, col + (i * sudokuSize));
-          addNodeToCollumn(&lastAddNode, &currentCollumnNode, row + (i * sudokuSize) + sudokuSize * sudokuSize);
-          addNodeToCollumn(&lastAddNode, &currentCollumnNode, area + (i * sudokuSize) + 2 * sudokuSize * sudokuSize);
         }
-      }else {
-        CollumnNode* currentCollumnNode = header;
-        Node* lastAddNode = NULL;
-        int i = sudoku[row][col] - 1;
-        addNodeToCollumn(&lastAddNode, &currentCollumnNode, col + (i * sudokuSize));
-        addNodeToCollumn(&lastAddNode, &currentCollumnNode, row + (i * sudokuSize) + sudokuSize * sudokuSize);
-        addNodeToCollumn(&lastAddNode, &currentCollumnNode, area + (i * sudokuSize) + 2 * sudokuSize * sudokuSize);
+      }
+      else{
+        int num = sodoku[row][col] - 1;
+        if(!createRow(row, col, num, sudokuSize, header)){
+            fprintf(
+                stderr, 
+                "Failed to add row for cell %d %d with num %d... exiting...", 
+                row, col, num
+                );
+        exit(EXIT_FAILURE);
+        }
       }
     }
   }
 
   return header;
+}
+
+void freeRestrictionsMatrix(ColumnNode* header){
+  ColumnNode* column = header->self.right->column;
+  while(column != header){
+    Node* columnRow = column->self.down;
+    while(columnRow != &column->self){
+      Node* tempRow = columnRow;
+      columnRow = column->self.down;
+      free(tempRow);
+    }
+    ColumnNode* tempColumn = column;
+    column = column->self.right->column;
+    header->self.right = &column->self;
+    free(column);
+  }
 }
 

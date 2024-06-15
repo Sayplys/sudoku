@@ -1,3 +1,4 @@
+#include <math.h>
 #include <stdio.h>
 #include "../game/sudoku.h"
 
@@ -9,10 +10,10 @@
 void printSudoku(int** table, int selectedRow, int selectedColumn){
     for (int row = 0; row < SIZE; row++) {
         for (int col = 0; col < SIZE; col++) {
-            if (col % 3 == 0 && col != 0)
+            if (col % (int)sqrt(SIZE) == 0 && col != 0)
                 printf("| ");
             
-            int field = row * 9 + col;
+            int field = row * SIZE + col;
             int mapArea = fixedFieldMap[field / BITS_PER_UINT];
             if(selectedRow != row || selectedColumn != col){
               if((mapArea | (1 << field)) == mapArea)
@@ -26,7 +27,7 @@ void printSudoku(int** table, int selectedRow, int selectedColumn){
  
         }
         printf("\n");
-        if ((row + 1) % 3 == 0 && row != SIZE - 1) {
+        if ((row + 1) % (int)sqrt(SIZE) == 0 && row != SIZE - 1) {
             for (int i = 0; i < SIZE + 2; i++)
                 printf("---");
             printf("\n");

@@ -1,7 +1,24 @@
 #ifndef DLXSUDOKU
 #define DLXSUDOKU
 
+typedef struct Node Node;
+typedef struct ColumnNode ColumnNode;
 
-void createRestrictionsMatrix(int** sudoku, int sudokuSize);
+struct Node {
+  Node* up;
+  Node* down;
+  Node* left;
+  Node* right;
+  ColumnNode* column;
+};
+
+struct ColumnNode {
+  Node self;
+  int index;
+  int size;
+};
+
+ColumnNode* createRestrictionsMatrix(int** sudoku, int sudokuSize);
+int** findSolution(int** sudoku, int sudokuSize);
 
 #endif //DLXSUDOKU

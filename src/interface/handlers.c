@@ -1,6 +1,8 @@
-#include <stdio.h>
-
 #include "../game/sudoku.h"
+#include "interface.h"
+#include "../solutionFinder/DLXSudoku.h"
+#include <stdlib.h>
+#include <unistd.h>
 
 bool selectFieldByArrow(char* input,int* currentRow, int* currentCol){
   if(input[0] == '\033')
@@ -46,7 +48,6 @@ bool inputValue(int** table, char input, int selectedRow, int selectedCol){
   return false;
 }
 
-
 bool showWin(){
   if(checkWin() == true){
     return true;
@@ -57,4 +58,12 @@ bool showWin(){
 
 void restartGame(){
   createSudoku();
+}
+
+void showSolution(){
+  int** solution = findSolution(sudokuTable, SIZE);
+  for(int i = 0; i < SIZE; i++)
+    for(int j = 0; j < SIZE; j++)
+      sudokuTable[i][j] = solution[i][j];
+  sleep(1);
 }

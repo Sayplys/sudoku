@@ -26,7 +26,7 @@ int main() {
         }
       }
 
-      hasChange = HandleInput(sudokuTable, &selectedRow, &selectedCol, isPlaying);
+      hasChange = HandleInput(sudokuTable, &selectedRow, &selectedCol, &isPlaying);
       if(!hasChange && !isPlaying){
         break;
       }

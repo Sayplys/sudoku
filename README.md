@@ -12,17 +12,17 @@ A simple Sudoku project designed to generate, validate, and solve Sudoku puzzles
 - [x] Interaction
     - [x] Add number to square
     - [x] Remove number from square
-- [ ] Interface
+- [x] Interface
     - [x] Show table
     - [x] Select square
     - [x] Add number
     - [x] Remove number
     - [x] Show win
     - [x] Make new game
-    - [ ] Show answers
-- [ ] Implement solution algorithm
+    - [x] Show answers
+- [x] Implement solution algorithm
     - [x] Create DLX double linked structure
-    - [ ] Apply DLX algorithm
+    - [x] Apply DLX algorithm
 
 ## Secondary Functionalities
 
@@ -40,12 +40,12 @@ A simple Sudoku project designed to generate, validate, and solve Sudoku puzzles
 1. Clone the repository:
     ```sh
     git clone https://github.com/Sayplys/sudoku.git
-    cd sudoku/src/gameLogic
+    cd sudoku/
     ```
 
 2. Compile the project:
     ```sh
-    gcc -o bin/sudoku.o src/main.c src/game/sudoku.c src/interface/displayer.c src/interface/handlers.c src/interface/listener.c
+    gcc -o bin/sudoku.o src/main.c src/game/sudoku.c src/interface/displayer.c src/interface/handlers.c src/interface/listener.c src/solutionFinder/DLXSudoku.c src/solutionFinder/restrictionsMatrix.c -lm
     ```
 
 3. Run the executable:
@@ -56,6 +56,9 @@ A simple Sudoku project designed to generate, validate, and solve Sudoku puzzles
 ### Usage
 
 1. The program will generate a Sudoku board based on the specified difficulty level.
+2. Use arrow key to move throught board.
+3. Press a number and enter to put it.
+4. Press 's' to show solution.
 
 ## Contribution
 

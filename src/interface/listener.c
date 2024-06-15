@@ -24,18 +24,23 @@ bool gameListener(int **table, int *currentRow, int *currentCol){
     return true;
   else if(inputValue(table, *input, *currentRow, *currentCol))
     return true;
-  
+  else if(input[0] == 's'){
+    showSolution();
+    return true;
+  }
+
   return false;
 }
 
-bool HandleInput(int **table, int *currentRow, int *currentCol, bool isPlaying){
+bool HandleInput(int **table, int *currentRow, int *currentCol, bool* isPlaying){
 
-  if(isPlaying)
+  if(*isPlaying)
     return gameListener(table, currentRow, currentCol);
   else{
     char input = getc(stdin);
     if(input == 'r'){
       restartGame();
+      *isPlaying = true;
       return true;
     }
     if(input == 'q')
