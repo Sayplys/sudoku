@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 void DLXSudoku(ColumnNode* restrictionsHeader, int size, int** solution, bool* founded);
 
@@ -36,7 +37,8 @@ void DLXSudoku(ColumnNode* restrictionsHeader, int size, int** solution, bool* s
 
   Node* currentColRow = column->self.down;
   while(currentColRow != &column->self){
-    saveSolution(currentColRow, solution, size);
+    if(!(*solutionFound))
+      saveSolution(currentColRow, solution, size);
     
     Node* rowNode = currentColRow -> right;
     while(rowNode != currentColRow){
@@ -89,6 +91,7 @@ void saveSolution(Node* rowNode, int** solution, int sudokuSize){
     }
     node = node->right;
   }while(node != rowNode);
+  int area = (row/(int)sqrt(sudokuSize)) * (int)sqrt(sudokuSize) + col/(int)sqrt(sudokuSize);
 
   solution[row][col] = num;
 }

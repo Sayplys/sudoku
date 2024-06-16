@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+void printMatrix(ColumnNode* header, int sudokuSize);
 
 bool addColumnNode(ColumnNode* header, int index){
   ColumnNode* column = (ColumnNode*)malloc(sizeof(ColumnNode));
@@ -155,3 +156,67 @@ void freeRestrictionsMatrix(ColumnNode* header){
   }
 }
 
+void printMatrix(ColumnNode* header, int sudokuSize) {
+  ColumnNode* colNode = (ColumnNode*)header->self.right;
+    while(colNode->index < sudokuSize*sudokuSize){
+      printf("\nField %d\n", colNode->index);
+      Node* rowNode = colNode->self.down;
+      while(rowNode != &colNode->self){
+        Node* node = rowNode->right;
+        int row = 0, col = 0, num = 0;
+        while(node != rowNode){
+          if(node->column->index >= sudokuSize * sudokuSize 
+            && node->column->index < 2 * sudokuSize * sudokuSize){
+            col = (node->column->index - sudokuSize*sudokuSize) / sudokuSize;
+            num = ((node->column->index - sudokuSize*sudokuSize) % sudokuSize) + 1;
+          }
+          else if(node->column->index >= 2 * sudokuSize * sudokuSize 
+                && node->column->index < 3 * sudokuSize * sudokuSize){
+            row = (node->column->index - 2 * sudokuSize*sudokuSize) / sudokuSize;
+          }
+          
+          node = node->right;
+        }
+        printf("[%d][%d] = [%d]\n", row, col, num);
+        rowNode = rowNode->down;
+      }
+      
+      colNode = (ColumnNode*)colNode->self.right->column;
+    }
+}
+
+/*void testCreateRestrictionsMatrix() {
+    int sudokuSize = 4;
+    int** sudoku = (int**)malloc(sudokuSize * sizeof(int*));
+    for (int i = 0; i < sudokuSize; i++) {
+        sudoku[i] = (int*)malloc(sudokuSize * sizeof(int));
+    }
+
+    // Sample 4x4 Sudoku puzzle
+    int sampleSudoku[4][4] = {
+        {0, 0, 0, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0}
+    };
+
+    for (int i = 0; i < sudokuSize; i++) {
+        for (int j = 0; j < sudokuSize; j++) {
+            sudoku[i][j] = sampleSudoku[i][j];
+        }
+    }
+
+    ColumnNode* header = createRestrictionsMatrix(sudoku, sudokuSize);
+    printMatrix(header, sudokuSize);
+
+    // Free allocated memory
+    for (int i = 0; i < sudokuSize; i++) {
+        free(sudoku[i]);
+    }
+    free(sudoku);
+}
+
+int main() {
+    testCreateRestrictionsMatrix();
+    return 0;
+}*/

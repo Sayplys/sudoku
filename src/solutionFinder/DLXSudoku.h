@@ -19,6 +19,7 @@ struct ColumnNode {
 };
 
 ColumnNode* createRestrictionsMatrix(int** sudoku, int sudokuSize);
+void freeRestrictionsMatrix(ColumnNode* header);
 int** findSolution(int** sudoku, int sudokuSize);
 
 #endif //DLXSUDOKU
