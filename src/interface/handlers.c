@@ -66,4 +66,5 @@ void showSolution(){
     for(int j = 0; j < SIZE; j++)
       sudokuTable[i][j] = solution[i][j];
   free(solution);
+  sleep(1);
 }
